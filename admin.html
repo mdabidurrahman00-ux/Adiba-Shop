@@ -1,0 +1,6 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>বিক্রয় বাজার — Admin</title><link rel="stylesheet" href="admin.css"></head><body>
+<div class="wrap"><h1>বিক্রয় বাজার — Admin Panel</h1><p class="muted">মোবাইল থেকেই পণ্য যোগ, দাম/ছবি পরিবর্তন বা মুছে ফেলুন।</p>
+<section id="login"><input id="email" type="email" placeholder="Admin email"><input id="password" type="password" placeholder="Password"><button onclick="login()">Login</button><p id="loginMsg"></p></section>
+<section id="panel" hidden><button onclick="logout()">Logout</button><hr>
+<h2>নতুন পণ্য</h2><input id="name" placeholder="পণ্যের নাম"><input id="price" type="number" placeholder="দাম"><input id="category" placeholder="ক্যাটাগরি"><input id="image" type="url" placeholder="ছবির URL (সহজ পদ্ধতি)"><button onclick="addProduct()">পণ্য যোগ করুন</button>
+<h2>পণ্যের তালিকা</h2><div id="list"></div></section></div><script type="module" src="admin.js"></script></body></html>

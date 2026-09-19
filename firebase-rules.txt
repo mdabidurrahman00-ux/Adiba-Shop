@@ -1,0 +1,13 @@
+FIRESTORE RULES (Firebase Console > Firestore Database > Rules)
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
+
+STORAGE is not required in this starter version because the admin panel accepts image URLs.

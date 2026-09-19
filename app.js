@@ -1,0 +1,16 @@
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {getFirestore,collection,getDocs,query,orderBy} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import {firebaseConfig,WHATSAPP_NUMBER} from "./firebase-config.js";
+const app=initializeApp(firebaseConfig), db=getFirestore(app);
+let products=[],cart=[],active="সব";
+const $=id=>document.getElementById(id);
+async function load(){try{const q=query(collection(db,"products"),orderBy("createdAt","desc"));const s=await getDocs(q);products=s.docs.map(d=>({id:d.id,...d.data()}));renderCats();render()}catch(e){console.error(e);$("products").innerHTML='<div class="empty">Firebase সংযোগ ঠিক করুন।</div>'}}
+function renderCats(){let cats=["সব",...new Set(products.map(p=>p.category||"অন্যান্য"))];$("categories").innerHTML=cats.map(c=>`<button class="cat ${c===active?"active":""}" onclick="setCat(${JSON.stringify(c)})">${c}</button>`).join("")}
+window.setCat=c=>{active=c;renderCats();render()}
+function render(){let term=$("search").value.toLowerCase();let list=products.filter(p=>(active==="সব"||p.category===active)&&(p.name||"").toLowerCase().includes(term));$("empty").hidden=list.length>0;$("products").innerHTML=list.map(p=>`<article class="card"><img src="${p.image||"placeholder.png"}" alt=""><div class="info"><h3>${p.name}</h3><div class="price">৳${Number(p.price||0).toLocaleString("bn-BD")}</div><button class="add" onclick="add(${JSON.stringify(p.id)})">কার্টে যোগ করুন</button></div></article>`).join("")}
+window.add=id=>{let p=products.find(x=>x.id===id),x=cart.find(x=>x.id===id);x?x.qty++:cart.push({...p,qty:1});updateCart()}
+function updateCart(){$("cartCount").textContent=cart.reduce((a,b)=>a+b.qty,0);$("cartItems").innerHTML=cart.length?cart.map(x=>`<div class="cartrow"><img src="${x.image||"placeholder.png"}"><div style="flex:1"><b>${x.name}</b><div>৳${x.price} × ${x.qty}</div><div class="qty"><button onclick="changeQty('${x.id}',-1)">−</button> ${x.qty} <button onclick="changeQty('${x.id}',1)">+</button></div></div></div>`).join(""):"কার্ট খালি";$("cartTotal").textContent=cart.reduce((a,b)=>a+b.price*b.qty,0).toLocaleString("bn-BD")}
+window.changeQty=(id,n)=>{let x=cart.find(x=>x.id===id);if(!x)return;x.qty+=n;if(x.qty<1)cart=cart.filter(y=>y.id!==id);updateCart()}
+window.openCart=()=>{$("cartModal").hidden=false;updateCart()};window.closeCart=()=>$("cartModal").hidden=true;
+window.sendWhatsApp=()=>{if(!cart.length)return alert("কার্টে পণ্য যোগ করুন।");let n=$("customerName").value.trim(),ph=$("customerPhone").value.trim(),ad=$("customerAddress").value.trim(),d=$("delivery").value;if(!n||!ph||!ad)return alert("নাম, মোবাইল নম্বর ও ঠিকানা দিন।");let sub=cart.reduce((a,b)=>a+b.price*b.qty,0),total=sub+Number(d);let lines=["*বিক্রয় বাজার — নতুন অর্ডার*","",`নাম: ${n}`,`মোবাইল: ${ph}`,`ঠিকানা: ${ad}`,"","পণ্য:"];cart.forEach(x=>lines.push(`• ${x.name} — ${x.qty} × ৳${x.price}`));lines.push("",`পণ্যের মূল্য: ৳${sub}`,`ডেলিভারি: ৳${d}`,`সর্বমোট: ৳${total}`,"","পেমেন্ট: Cash On Delivery"];location.href=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\\n"))}`}
+$("search").addEventListener("input",render);$("year").textContent=new Date().getFullYear();load();

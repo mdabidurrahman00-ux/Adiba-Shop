@@ -1,86 +1,32 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ADIBA SHOP — অনলাইন শপ</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f5f7fb;color:#172033}
-header{background:#111827;color:white;padding:14px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:5}
-.logo{font-size:24px;font-weight:800}.cart{background:#fff;color:#111827;border:0;border-radius:10px;padding:10px 15px;font-weight:700;cursor:pointer}
-.hero{padding:45px 5%;background:linear-gradient(135deg,#e0f2fe,#f8fafc)}.hero h1{font-size:38px;margin:0 0 10px}.hero p{font-size:18px;color:#475569}
-.wrap{max-width:1150px;margin:auto;padding:25px 5%}.tools{display:flex;gap:10px;margin-bottom:20px}.tools input{flex:1;padding:13px;border:1px solid #d1d5db;border-radius:10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}.card{background:#fff;border-radius:15px;padding:14px;box-shadow:0 3px 15px #0000000b}.pic{height:180px;border-radius:12px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:46px}.card h3{margin:12px 0 6px}.price{font-size:20px;font-weight:800;margin:8px 0}.btn{width:100%;padding:11px;border:0;border-radius:9px;background:#111827;color:#fff;cursor:pointer;font-weight:700}
-.panel{background:#fff;border-radius:15px;padding:20px;margin-top:25px;box-shadow:0 3px 15px #0000000b}.row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:10px 0}.form input,.form textarea{width:100%;padding:12px;margin:6px 0 10px;border:1px solid #d1d5db;border-radius:9px}.form textarea{min-height:80px}.notice{background:#ecfdf5;border:1px solid #a7f3d0;padding:12px;border-radius:9px;margin-bottom:12px}
-footer{text-align:center;padding:30px;color:#64748b}
-</style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>বিক্রয় বাজার — Online Shop</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><div class="logo">🛍️ ADIBA SHOP</div><button class="cart" onclick="document.getElementById('order').scrollIntoView()">🛒 কার্ট <span id="count">0</span></button></header>
-<section class="hero"><h1>আপনার পছন্দের পণ্য এক জায়গায়</h1><p>ADIBA SHOP — সহজে অর্ডার করুন, ক্যাশ অন ডেলিভারি সুবিধা।</p></section>
-<main class="wrap">
-<div class="tools"><input id="search" placeholder="পণ্য খুঁজুন..." oninput="render()"></div>
-<div id="products" class="grid"></div>
-
-<section id="order" class="panel">
-<h2>🛒 আপনার অর্ডার</h2>
-<div id="cart"></div>
-<div id="total" style="font-size:20px;font-weight:800;margin:15px 0">মোট: ৳0</div>
-<div class="form">
-<h3>📦 ডেলিভারি তথ্য</h3>
-<input id="name" placeholder="আপনার নাম">
-<input id="phone" placeholder="মোবাইল নম্বর">
-<textarea id="address" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
-<select id="payment" style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:9px">
-<option>Cash on Delivery</option><option>বিকাশ</option><option>নগদ</option>
-</select>
-<br><br><button class="btn" onclick="placeOrder()">অর্ডার কনফার্ম করুন</button>
-</div>
-<div id="msg"></div>
-</section>
+<header class="topbar">
+  <div class="brand">বিক্রয় বাজার</div>
+  <div class="search"><input id="search" placeholder="পণ্য খুঁজুন..."></div>
+  <button class="cartBtn" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+</header>
+<nav id="categories" class="categories"></nav>
+<main>
+  <section class="hero"><h1>আপনার প্রয়োজনের সবকিছু এক জায়গায়</h1><p>পছন্দের পণ্য বেছে নিন, অর্ডার দিন — অর্ডার সরাসরি WhatsApp-এ যাবে।</p></section>
+  <section><div id="products" class="grid"></div><div id="empty" class="empty" hidden>কোনো পণ্য পাওয়া যায়নি।</div></section>
 </main>
-<footer>© 2026 ADIBA SHOP — All rights reserved.</footer>
-
-<script>
-const products=[
- {id:1,name:"স্মার্ট গ্যাজেট",price:650,icon:"📱"},
- {id:2,name:"হোম ডেকর",price:850,icon:"🏠"},
- {id:3,name:"ফ্যাশন পণ্য",price:750,icon:"👕"},
- {id:4,name:"কিচেন পণ্য",price:550,icon:"🍳"},
- {id:5,name:"অ্যাক্সেসরিজ",price:350,icon:"🎧"},
- {id:6,name:"দৈনন্দিন প্রয়োজনীয় পণ্য",price:450,icon:"🛍️"}
-];
-let cart=[];
-function render(){
- const q=document.getElementById('search').value.toLowerCase();
- document.getElementById('products').innerHTML=products.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`
- <div class="card"><div class="pic">${p.icon}</div><h3>${p.name}</h3><div class="price">৳${p.price}</div><button class="btn" onclick="add(${p.id})">কার্টে যোগ করুন</button></div>`).join('');
- drawCart();
-}
-function add(id){let p=products.find(x=>x.id===id);let x=cart.find(x=>x.id===id);x?x.qty++:cart.push({...p,qty:1});drawCart()}
-function remove(id){cart=cart.filter(x=>x.id!==id);drawCart()}
-function drawCart(){
- document.getElementById('count').textContent=cart.reduce((a,x)=>a+x.qty,0);
- let total=cart.reduce((a,x)=>a+x.price*x.qty,0);
- document.getElementById('total').textContent='মোট: ৳'+total;
- document.getElementById('cart').innerHTML=cart.length?cart.map(x=>`<div class="row"><span>${x.icon} ${x.name} × ${x.qty}</span><span>৳${x.price*x.qty} <button onclick="remove(${x.id})">❌</button></span></div>`).join(''):'<p>কার্টে এখনো কোনো পণ্য নেই।</p>';
-}
-function placeOrder(){
- if(!cart.length)return alert('আগে একটি পণ্য কার্টে যোগ করুন।');
- let n=document.getElementById('name').value.trim(), ph=document.getElementById('phone').value.trim(), a=document.getElementById('address').value.trim();
- if(!n||!ph||!a)return alert('নাম, মোবাইল নম্বর ও ঠিকানা পূরণ করুন।');
- let pay=document.getElementById('payment').value;
- let total=cart.reduce((s,x)=>s+x.price*x.qty,0);
- let items=cart.map(x=>`• ${x.name} × ${x.qty} = ৳${x.price*x.qty}`).join('\n');
- let order={name:n,phone:ph,address:a,payment:pay,items:cart,total:total};
- localStorage.setItem('abid_last_order',JSON.stringify(order));
- let message=`ADIBA SHOP - নতুন অর্ডার\n\nনাম: ${n}\nমোবাইল: ${ph}\nঠিকানা: ${a}\nপেমেন্ট: ${pay}\n\nপণ্য:\n${items}\n\nমোট: ৳${total}`;
- let whatsappNumber='8801740657720';
- let url='https://wa.me/'+whatsappNumber+'?text='+encodeURIComponent(message);
- document.getElementById('msg').innerHTML='<div class="notice">✅ অর্ডার তৈরি হয়েছে। WhatsApp-এ পাঠাতে নিচের বোতামে চাপুন।<br><br><a class="btn" style="display:block;text-align:center;text-decoration:none" href="'+url+'" target="_blank">📲 WhatsApp-এ অর্ডার পাঠান</a></div>';
-}
-
-render();
-</script>
-</body>
-</html>
+<div id="cartModal" class="modal" hidden>
+  <div class="sheet"><button class="close" onclick="closeCart()">×</button><h2>আপনার কার্ট</h2><div id="cartItems"></div>
+  <div class="total">মোট: ৳<span id="cartTotal">0</span></div>
+  <div class="checkout">
+    <input id="customerName" placeholder="আপনার নাম">
+    <input id="customerPhone" placeholder="মোবাইল নম্বর">
+    <textarea id="customerAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+    <select id="delivery"><option value="80">ঢাকা — ৳৮০</option><option value="130">ঢাকার বাহিরে — ৳১৩০</option></select>
+    <button class="wa" onclick="sendWhatsApp()">WhatsApp-এ অর্ডার করুন</button>
+  </div></div>
+</div>
+<footer>© <span id="year"></span> বিক্রয় বাজার</footer>
+<script type="module" src="app.js"></script>
+</body></html>

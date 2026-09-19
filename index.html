@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ABID SHOP — অনলাইন শপ</title>
+<title>ADIBA SHOP — অনলাইন শপ</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f5f7fb;color:#172033}
 header{background:#111827;color:white;padding:14px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:5}
@@ -16,8 +16,8 @@ footer{text-align:center;padding:30px;color:#64748b}
 </style>
 </head>
 <body>
-<header><div class="logo">🛍️ ABID SHOP</div><button class="cart" onclick="document.getElementById('order').scrollIntoView()">🛒 কার্ট <span id="count">0</span></button></header>
-<section class="hero"><h1>আপনার পছন্দের পণ্য এক জায়গায়</h1><p>ABID SHOP — সহজে অর্ডার করুন, ক্যাশ অন ডেলিভারি সুবিধা।</p></section>
+<header><div class="logo">🛍️ ADIBA SHOP</div><button class="cart" onclick="document.getElementById('order').scrollIntoView()">🛒 কার্ট <span id="count">0</span></button></header>
+<section class="hero"><h1>আপনার পছন্দের পণ্য এক জায়গায়</h1><p>ADIBA SHOP — সহজে অর্ডার করুন, ক্যাশ অন ডেলিভারি সুবিধা।</p></section>
 <main class="wrap">
 <div class="tools"><input id="search" placeholder="পণ্য খুঁজুন..." oninput="render()"></div>
 <div id="products" class="grid"></div>
@@ -39,7 +39,7 @@ footer{text-align:center;padding:30px;color:#64748b}
 <div id="msg"></div>
 </section>
 </main>
-<footer>© 2026 ABID SHOP — All rights reserved.</footer>
+<footer>© 2026 ADIBA SHOP — All rights reserved.</footer>
 
 <script>
 const products=[
@@ -74,7 +74,7 @@ function placeOrder(){
  let items=cart.map(x=>`• ${x.name} × ${x.qty} = ৳${x.price*x.qty}`).join('\n');
  let order={name:n,phone:ph,address:a,payment:pay,items:cart,total:total};
  localStorage.setItem('abid_last_order',JSON.stringify(order));
- let message=`ABID SHOP - নতুন অর্ডার\n\nনাম: ${n}\nমোবাইল: ${ph}\nঠিকানা: ${a}\nপেমেন্ট: ${pay}\n\nপণ্য:\n${items}\n\nমোট: ৳${total}`;
+ let message=`ADIBA SHOP - নতুন অর্ডার\n\nনাম: ${n}\nমোবাইল: ${ph}\nঠিকানা: ${a}\nপেমেন্ট: ${pay}\n\nপণ্য:\n${items}\n\nমোট: ৳${total}`;
  let whatsappNumber='8801740657720';
  let url='https://wa.me/'+whatsappNumber+'?text='+encodeURIComponent(message);
  document.getElementById('msg').innerHTML='<div class="notice">✅ অর্ডার তৈরি হয়েছে। WhatsApp-এ পাঠাতে নিচের বোতামে চাপুন।<br><br><a class="btn" style="display:block;text-align:center;text-decoration:none" href="'+url+'" target="_blank">📲 WhatsApp-এ অর্ডার পাঠান</a></div>';

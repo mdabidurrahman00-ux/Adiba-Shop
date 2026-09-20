@@ -1,12 +1,11 @@
-// Firebase Console থেকে আপনার Web App-এর config এখানে বসান।
 export const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCSLDBbSzZkZLL5M8Swp-_Dq_YsiCF7Ng8",
+  authDomain: "bikroy-bazar-191b3.firebaseapp.com",
+  projectId: "bikroy-bazar-191b3",
+  storageBucket: "bikroy-bazar-191b3.firebasestorage.app",
+  messagingSenderId: "54047580167",
+  appId: "1:54047580167:web:5e08b58f8c75faffb0caa2",
+  measurementId: "G-MD0TRHET8E"
 };
 
-// আপনার WhatsApp নম্বর: দেশের কোডসহ, + ছাড়া। উদাহরণ: 8801XXXXXXXXX
-export const WHATSAPP_NUMBER = "8801XXXXXXXXX";
+export const WHATSAPP_NUMBER = "8801740657720";
